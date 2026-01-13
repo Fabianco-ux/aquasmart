@@ -1,0 +1,12 @@
+{
+  "cards": [
+    { "id": 1, "title": "Biblioteca y Cursos", "description": "Guías, cursos y recursos educativos sobre acuicultura", "icon": "📚", "link": "/biblioteca" },
+    { "id": 2, "title": "Insumos y Proveedores", "description": "Proveedores recomendados y enlaces útiles", "icon": "🛒", "link": "/insumos" },
+    { "id": 3, "title": "Identificación de Plagas", "description": "Detecta enfermedades y problemas comunes", "icon": "🦠", "link": "/plagas" },
+    { "id": 4, "title": "Soporte AquaExpert", "description": "Solicita ayuda o visitas técnicas", "icon": "🛠️", "link": "/soporte" },
+    { "id": 5, "title": "Control de Producción", "description": "Registra siembras y avances", "icon": "🐟", "link": "/produccion" },
+    { "id": 6, "title": "Alimentación y Horarios", "description": "Planifica alimentación inteligente", "icon": "⏰", "link": "/alimentacion" },
+    { "id": 7, "title": "Cosecha y Procesamiento", "description": "Paso-a-paso de buenas prácticas", "icon": "🧊", "link": "/cosecha" },
+    { "id": 8, "title": "Gestión y Sostenibilidad", "description": "Finanzas y ROI con gráficos", "icon": "📈", "link": "/gestion" }
+  ]
+}
