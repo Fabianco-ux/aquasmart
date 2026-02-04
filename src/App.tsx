@@ -28,6 +28,7 @@ function App() {
           <Link to="/insumos" style={{ color: 'white', margin: '0 1rem' }}>Insumos</Link>
           <Link to="/plagas" style={{ color: 'white', margin: '0 1rem' }}>Plagas</Link>
           <Link to="/soporte" style={{ color: 'white', margin: '0 1rem' }}>Soporte</Link>
+          <Link to="/especies" style={{ color: 'white', margin: '0 1rem' }}>Especies</Link>
         </nav>
       </header>
 
