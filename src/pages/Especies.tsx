@@ -3,6 +3,13 @@ import DashboardCard from '../components/DashboardCard'
 import { especies } from '../mocks/especies'
 
 const Especies = () => {
+  const imageFor = (name: string) => {
+    const n = name.toLowerCase()
+    if (n.includes('bagre capaz')) {
+      return new URL('bagre%20capaz.png', import.meta.env.BASE_URL).toString()
+    }
+    return undefined
+  }
   return (
     <Container maxWidth="lg">
       <Typography variant="h4" gutterBottom sx={{ mt: 4, textAlign: 'center' }}>
@@ -18,6 +25,7 @@ const Especies = () => {
             <DashboardCard
               title={esp.nombre}
               description={`Temp: ${esp.temp} · Densidad: ${esp.densidad} · Ciclo: ${esp.ciclo}`}
+              imageSrc={imageFor(esp.nombre)}
             />
           </Grid>
         ))}
