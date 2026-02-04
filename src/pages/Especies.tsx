@@ -1,24 +1,23 @@
 import { Grid, Typography, Container } from '@mui/material'
 import DashboardCard from '../components/DashboardCard'
-import mockData from '../mocks/data.json'
+import { especies } from '../mocks/especies'
 
-const Dashboard = () => {
+const Especies = () => {
   return (
     <Container maxWidth="lg">
       <Typography variant="h4" gutterBottom sx={{ mt: 4, textAlign: 'center' }}>
-        Bienvenido a tu Dashboard AquaSmart
+        Especies disponibles
       </Typography>
       <Typography variant="body1" paragraph sx={{ textAlign: 'center', mb: 4 }}>
-        Simula tu cultivo en Venadillo, Tolima. Elige una sección para comenzar.
+        Consulta rápidamente las especies más comunes en cultivo.
       </Typography>
 
       <Grid container spacing={3}>
-        {mockData.cards.map((card) => (
-          <Grid item xs={12} sm={6} md={4} key={card.id}>
+        {especies.map((esp) => (
+          <Grid item xs={12} sm={6} md={4} key={esp.nombre}>
             <DashboardCard
-              title={card.title}
-              description={card.description}
-              link={card.link}
+              title={esp.nombre}
+              description={`Temp: ${esp.temp} · Densidad: ${esp.densidad} · Ciclo: ${esp.ciclo}`}
             />
           </Grid>
         ))}
@@ -27,4 +26,4 @@ const Dashboard = () => {
   )
 }
 
-export default Dashboard
+export default Especies
