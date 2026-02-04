@@ -61,15 +61,15 @@ const ChatbotWidget = () => {
           aria-label="Abrir chatbot"
           onClick={() => setOpen(true)}
           sx={{
-            width: 56,
-            height: 56,
+            width: 64,
+            height: 64,
             borderRadius: '50%',
             bgcolor: '#1976d2',
             boxShadow: 3,
             '&:hover': { bgcolor: '#1565c0' }
           }}
         >
-          <Avatar src={botIcon} alt={botName} sx={{ width: 36, height: 36 }} />
+          <Avatar src={botIcon} alt={botName} sx={{ width: 48, height: 48 }} />
         </IconButton>
       </Box>
 
@@ -78,7 +78,7 @@ const ChatbotWidget = () => {
         <Box sx={{ position: 'fixed', bottom: 90, right: 20, zIndex: 1300 }}>
           <Paper sx={{ width: 320, maxHeight: 420, display: 'flex', flexDirection: 'column', boxShadow: 6, borderRadius: 2 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', p: 1.5, borderBottom: '1px solid #eee' }}>
-              <Avatar src={botIcon} alt={botName} sx={{ width: 28, height: 28, mr: 1 }} />
+              <Avatar src={botIcon} alt={botName} sx={{ width: 36, height: 36, mr: 1 }} />
               <Typography variant="subtitle1" sx={{ flex: 1 }}>{botName}</Typography>
               <IconButton aria-label="Cerrar" onClick={() => setOpen(false)} size="small"><CloseIcon /></IconButton>
             </Box>
