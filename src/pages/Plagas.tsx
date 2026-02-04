@@ -20,7 +20,7 @@ export default function Plagas() {
       <Card>
         <CardContent>
           <Typography variant="body1" sx={{ mb: 2 }}>
-            Sube una imagen (simulación) y analiza para ver un remedio mock.
+            Sube una imagen y analiza para ver un remedio mock.
           </Typography>
           <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2 }}>
             <TextField
