@@ -3,10 +3,24 @@ import DashboardCard from '../components/DashboardCard'
 import { especies } from '../mocks/especies'
 
 const Especies = () => {
+  const normalize = (s: string) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
   const imageFor = (name: string) => {
-    const n = name.toLowerCase()
-    if (n.includes('bagre capaz')) {
-      return new URL('bagre%20capaz.png', import.meta.env.BASE_URL).toString()
+    const n = normalize(name)
+    const files: Array<{ key: string; file: string }> = [
+      { key: 'bagre capitan', file: 'bagre capitan.png' },
+      { key: 'bagre pintado', file: 'bagre pintado.jpg' },
+      { key: 'bagre rayado', file: 'bagre rayado.png' },
+      { key: 'bocachico', file: 'bocachico.png' },
+      { key: 'cachama', file: 'cachama.png' },
+      { key: 'camaron', file: 'camaron.png' },
+      { key: 'tilapia plateada', file: 'tilapia plateada.png' },
+      { key: 'tilapia roja', file: 'tilapia roja.png' },
+      { key: 'trucha', file: 'trucha.jpg' },
+    ]
+    for (const { key, file } of files) {
+      if (n.includes(normalize(key))) {
+        return new URL(encodeURI(file), import.meta.env.BASE_URL).toString()
+      }
     }
     return undefined
   }
