@@ -13,7 +13,7 @@ export default function Soporte() {
     const list = JSON.parse(localStorage.getItem('aquasmart-soporte') || '[]')
     list.unshift(payload)
     localStorage.setItem('aquasmart-soporte', JSON.stringify(list))
-    setConfirm('Solicitud guardada localmente. Un experto te contactará (demo).')
+    setConfirm('Solicitud guardada localmente. Un experto te contactará.')
     setNombre(''); setTelefono(''); setMensaje('')
   }
 

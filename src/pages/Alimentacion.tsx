@@ -15,7 +15,7 @@ export default function Alimentacion() {
   const handleGuardar = () => {
     const payload = { fase, peso, fecha }
     localStorage.setItem('aquasmart-alimentacion', JSON.stringify(payload))
-    alert('Horario guardado localmente (demo).')
+    alert('Horario guardado localmente.')
   }
 
   return (

@@ -29,7 +29,7 @@ function App() {
         textAlign: 'center',
         position: 'relative'
       }}>
-        <h1>AquaSmart Manager - Demo</h1>
+        <h1>AquaSmart Manager</h1>
         <p>Gestión inteligente de acuicultura</p>
         <nav>
           <Link to="/" style={{ color: 'white', margin: '0 1rem' }}>Dashboard</Link>
@@ -59,7 +59,7 @@ function App() {
           <Route path="/gestion" element={<Gestion />} />
           <Route path="/especies" element={<Especies />} />
           <Route path="/species/:speciesId" element={<SpeciesPage />} />
-          <Route path="*" element={<div><h2>404 - Página no encontrada (en demo)</h2></div>} />
+          <Route path="*" element={<div><h2>404 - Página no encontrada</h2></div>} />
         </Routes>
       </main>
 

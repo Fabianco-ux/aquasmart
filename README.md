@@ -1,6 +1,6 @@
-# AquaSmart Manager - Demo (Vite + React + TS)
+# AquaSmart Manager (Vite + React + TS)
 
-Demo SPA responsive con UI Material-UI, rutas con React Router y datos mock. Personalización simulada con `localStorage`. Listo para desplegar en GitHub Pages.
+SPA responsive con UI Material-UI, rutas con React Router y datos mock. Personalización simulada con `localStorage`. Listo para desplegar en GitHub Pages.
 
 ## Requisitos
 - Node.js 18+ y npm
@@ -63,7 +63,7 @@ export default defineConfig({
 ```bash
 git init
 git add .
-git commit -m "Initial commit: AquaSmart demo"
+git commit -m "Initial commit: AquaSmart"
 git remote add origin https://github.com/Fabianco-ux/aquasmart.git
 git branch -M main
 git push -u origin main
