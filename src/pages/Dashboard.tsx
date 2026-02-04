@@ -9,7 +9,7 @@ const Dashboard = () => {
         <img
           src={new URL('logo.png', new URL(import.meta.env.BASE_URL, window.location.origin)).toString()}
           alt="AquaSmart Logo"
-          style={{ height: 48 }}
+          style={{ height: 64 }}
         />
       </Box>
       <Typography variant="h4" gutterBottom sx={{ mt: 4, textAlign: 'center' }}>
