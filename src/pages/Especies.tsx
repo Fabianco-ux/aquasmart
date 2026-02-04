@@ -1,29 +1,24 @@
 import { Grid, Typography, Container } from '@mui/material'
 import DashboardCard from '../components/DashboardCard'
-import { especies } from '../mocks/especies'
+import { speciesData } from '../data/species'
 
 const Especies = () => {
-  const normalize = (s: string) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-  const imageFor = (name: string) => {
-    const n = normalize(name)
-    const files: Array<{ key: string; file: string }> = [
-      { key: 'bagre capitan', file: 'bagre capitan.png' },
-      { key: 'bagre pintado', file: 'bagre pintado.jpg' },
-      { key: 'bagre rayado', file: 'bagre rayado.png' },
-      { key: 'bocachico', file: 'bocachico.png' },
-      { key: 'cachama', file: 'cachama.png' },
-      { key: 'camaron', file: 'camaron.png' },
-      { key: 'tilapia plateada', file: 'tilapia plateada.png' },
-      { key: 'tilapia roja', file: 'tilapia roja.png' },
-      { key: 'trucha', file: 'trucha.jpg' },
-    ]
-    for (const { key, file } of files) {
-      if (n.includes(normalize(key))) {
-        const base = new URL(import.meta.env.BASE_URL, window.location.origin)
-        return new URL(encodeURI(file), base).toString()
-      }
+  const imageFor = (id: string) => {
+    const files: Record<string, string> = {
+      bagreCapitan: 'bagre capitan.png',
+      bagrePintado: 'bagre pintado.jpg',
+      bagreRayado: 'bagre rayado.png',
+      bocachico: 'bocachico.png',
+      cachama: 'cachama.png',
+      camaron: 'camaron.png',
+      tilapiaPlateada: 'tilapia plateada.png',
+      tilapiaRoja: 'tilapia roja.png',
+      trucha: 'trucha.jpg'
     }
-    return undefined
+    const file = files[id]
+    if (!file) return undefined
+    const base = new URL(import.meta.env.BASE_URL, window.location.origin)
+    return new URL(encodeURI(file), base).toString()
   }
   return (
     <Container maxWidth="lg">
@@ -35,12 +30,13 @@ const Especies = () => {
       </Typography>
 
       <Grid container spacing={3}>
-        {especies.map((esp) => (
-          <Grid item xs={12} sm={6} md={4} key={esp.nombre}>
+        {Object.entries(speciesData).map(([id, data]) => (
+          <Grid item xs={12} sm={6} md={4} key={id}>
             <DashboardCard
-              title={esp.nombre}
-              description={`Temp: ${esp.temp} · Densidad: ${esp.densidad} · Ciclo: ${esp.ciclo}`}
-              imageSrc={imageFor(esp.nombre)}
+              title={data.name}
+              description={`Temp: ${data.temperature} · Densidad: ${data.density} · Ciclo: ${data.cycle}`}
+              link={`/species/${id}`}
+              imageSrc={imageFor(id)}
             />
           </Grid>
         ))}

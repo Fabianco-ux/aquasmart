@@ -9,6 +9,7 @@ import Alimentacion from './pages/Alimentacion'
 import Cosecha from './pages/Cosecha'
 import Gestion from './pages/Gestion'
 import Especies from './pages/Especies'
+import SpeciesPage from './pages/SpeciesPage'
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
           <Route path="/cosecha" element={<Cosecha />} />
           <Route path="/gestion" element={<Gestion />} />
           <Route path="/especies" element={<Especies />} />
+          <Route path="/species/:speciesId" element={<SpeciesPage />} />
           <Route path="*" element={<div><h2>404 - Página no encontrada (en demo)</h2></div>} />
         </Routes>
       </main>
