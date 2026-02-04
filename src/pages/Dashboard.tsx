@@ -8,9 +8,6 @@ const Dashboard = () => {
       <Typography variant="h4" gutterBottom sx={{ mt: 4, textAlign: 'center' }}>
         Bienvenido a tu Dashboard AquaSmart
       </Typography>
-      <Typography variant="body1" paragraph sx={{ textAlign: 'center', mb: 4 }}>
-        Simula tu cultivo en Venadillo, Tolima. Elige una sección para comenzar.
-      </Typography>
 
       <Grid container spacing={3}>
         {mockData.cards.map((card) => (
