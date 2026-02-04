@@ -1,6 +1,10 @@
 import { Routes, Route, Link } from 'react-router-dom'
+import { IconButton } from '@mui/material'
+import Brightness7Icon from '@mui/icons-material/Brightness7'
+import Brightness4Icon from '@mui/icons-material/Brightness4'
 import ChatbotWidget from './components/ChatbotWidget'
 import { ChatbotProvider } from './context/ChatbotContext'
+import { ThemeProvider, useThemeMode } from './context/ThemeContext'
 import Dashboard from './pages/Dashboard'
 import Biblioteca from './pages/Biblioteca'
 import Insumos from './pages/Insumos'
@@ -14,14 +18,16 @@ import Especies from './pages/Especies'
 import SpeciesPage from './pages/SpeciesPage'
 
 function App() {
+  const { darkMode, toggleTheme } = useThemeMode()
   return (
     <ChatbotProvider>
-    <div style={{ fontFamily: 'Roboto, sans-serif', minHeight: '100vh', background: '#f0f7f4' }}>
+    <div style={{ fontFamily: 'Roboto, sans-serif', minHeight: '100vh' }}>
       <header style={{
         background: '#1976d2',
-        color: 'white',
+        color: 'inherit',
         padding: '1rem',
-        textAlign: 'center'
+        textAlign: 'center',
+        position: 'relative'
       }}>
         <h1>AquaSmart Manager - Demo</h1>
         <p>Gestión inteligente de acuicultura</p>
@@ -33,6 +39,11 @@ function App() {
           <Link to="/soporte" style={{ color: 'white', margin: '0 1rem' }}>Soporte</Link>
           <Link to="/especies" style={{ color: 'white', margin: '0 1rem' }}>Especies</Link>
         </nav>
+        <div style={{ position: 'absolute', top: 8, right: 12 }}>
+          <IconButton aria-label="Toggle theme" onClick={toggleTheme} color="inherit">
+            {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton>
+        </div>
       </header>
 
       <main style={{ padding: '2rem' }}>
@@ -53,7 +64,7 @@ function App() {
       </main>
 
       <ChatbotWidget />
-      <footer style={{ textAlign: 'center', padding: '1rem', background: '#1976d2', color: 'white' }}>
+      <footer style={{ textAlign: 'center', padding: '1rem', background: '#1976d2', color: 'inherit' }}>
         © 2026 AquaSmart
       </footer>
     </div>
@@ -61,4 +72,10 @@ function App() {
   )
 }
 
-export default App
+const AppWithTheme = () => (
+  <ThemeProvider>
+    <App />
+  </ThemeProvider>
+)
+
+export default AppWithTheme
