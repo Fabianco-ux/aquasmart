@@ -19,7 +19,8 @@ const Especies = () => {
     ]
     for (const { key, file } of files) {
       if (n.includes(normalize(key))) {
-        return new URL(encodeURI(file), import.meta.env.BASE_URL).toString()
+        const base = new URL(import.meta.env.BASE_URL, window.location.origin)
+        return new URL(encodeURI(file), base).toString()
       }
     }
     return undefined
