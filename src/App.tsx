@@ -47,7 +47,7 @@ function App() {
       </main>
 
       <footer style={{ textAlign: 'center', padding: '1rem', background: '#1976d2', color: 'white' }}>
-        © 2026 AquaSmart - Demo para clientes
+        © 2026 AquaSmart
       </footer>
     </div>
   )
