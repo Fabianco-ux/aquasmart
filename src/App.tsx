@@ -1,4 +1,6 @@
 import { Routes, Route, Link } from 'react-router-dom'
+import ChatbotWidget from './components/ChatbotWidget'
+import { ChatbotProvider } from './context/ChatbotContext'
 import Dashboard from './pages/Dashboard'
 import Biblioteca from './pages/Biblioteca'
 import Insumos from './pages/Insumos'
@@ -13,6 +15,7 @@ import SpeciesPage from './pages/SpeciesPage'
 
 function App() {
   return (
+    <ChatbotProvider>
     <div style={{ fontFamily: 'Roboto, sans-serif', minHeight: '100vh', background: '#f0f7f4' }}>
       <header style={{
         background: '#1976d2',
@@ -49,10 +52,12 @@ function App() {
         </Routes>
       </main>
 
+      <ChatbotWidget />
       <footer style={{ textAlign: 'center', padding: '1rem', background: '#1976d2', color: 'white' }}>
         © 2026 AquaSmart
       </footer>
     </div>
+    </ChatbotProvider>
   )
 }
 
