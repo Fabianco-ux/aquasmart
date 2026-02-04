@@ -4,12 +4,7 @@ import mockData from '../mocks/data.json'
 
 const Dashboard = () => {
   return (
-    <Container maxWidth="lg" sx={{ position: 'relative', pt: 10 }}>
-      <img
-        src={new URL('logo.png', new URL(import.meta.env.BASE_URL, window.location.origin)).toString()}
-        alt="AquaSmart Logo"
-        style={{ position: 'absolute', top: 16, left: 16, height: 80 }}
-      />
+    <Container maxWidth="lg">
       <Typography variant="h4" gutterBottom sx={{ textAlign: 'center', mb: 4 }}>
         Bienvenido a tu Dashboard AquaSmart
       </Typography>
