@@ -1,10 +1,17 @@
-import { Grid, Typography, Container } from '@mui/material'
+import { Grid, Typography, Container, Box } from '@mui/material'
 import DashboardCard from '../components/DashboardCard'
 import mockData from '../mocks/data.json'
 
 const Dashboard = () => {
   return (
     <Container maxWidth="lg">
+      <Box sx={{ mb: 2 }}>
+        <img
+          src={new URL('logo.png', new URL(import.meta.env.BASE_URL, window.location.origin)).toString()}
+          alt="AquaSmart Logo"
+          style={{ height: 48 }}
+        />
+      </Box>
       <Typography variant="h4" gutterBottom sx={{ mt: 4, textAlign: 'center' }}>
         Bienvenido a tu Dashboard AquaSmart
       </Typography>
