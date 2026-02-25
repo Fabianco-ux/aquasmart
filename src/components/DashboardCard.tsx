@@ -10,7 +10,14 @@ interface DashboardCardProps {
 
 const DashboardCard = ({ title, description, link, imageSrc }: DashboardCardProps) => {
   return (
-    <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <Card
+      sx={{
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        boxShadow: '0 8px 24px rgba(25, 118, 210, 0.25)'
+      }}
+    >
       {link ? (
         <CardActionArea component={RouterLink} to={link} sx={{ height: '100%' }}>
           {imageSrc && (
