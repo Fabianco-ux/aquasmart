@@ -19,7 +19,7 @@ import SpeciesPage from './pages/SpeciesPage'
 
 function App() {
   const { darkMode, toggleTheme } = useThemeMode()
-  const logoSrc = new URL('logo.png', new URL(import.meta.env.BASE_URL, window.location.origin)).toString()
+  const logoSrc = `${new URL('logo.png', new URL(import.meta.env.BASE_URL, window.location.origin)).toString()}?v=2`
   return (
     <ChatbotProvider>
     <div style={{ fontFamily: 'Roboto, sans-serif', minHeight: '100vh' }}>
@@ -30,7 +30,7 @@ function App() {
         textAlign: 'center',
         position: 'relative'
       }}>
-        <img src={logoSrc} alt="AquaSmart Logo" style={{ position: 'absolute', top: 8, left: 12, height: 72 }} />
+        <img src={logoSrc} alt="AquaSmart Logo" style={{ position: 'absolute', top: 8, left: 12, height: 110 }} />
         <h1>AquaSmart Manager</h1>
         <p>Gestión inteligente de acuicultura</p>
         <nav>
