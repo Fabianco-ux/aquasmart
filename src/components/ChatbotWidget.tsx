@@ -1,6 +1,7 @@
 import { useState, useMemo, useRef, useEffect } from 'react'
 import { Box, Paper, Typography, IconButton, TextField, Button, Divider, List, ListItem, ListItemText, Fade, Avatar, Switch, FormControlLabel } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
+import UploadFileIcon from '@mui/icons-material/UploadFile'
 import { useChatbot } from '../context/ChatbotContext'
 
 const ChatbotWidget = () => {
@@ -8,6 +9,9 @@ const ChatbotWidget = () => {
   const [open, setOpen] = useState(false)
   const [input, setInput] = useState('')
   const [iaMode, setIaMode] = useState(true)
+  const [pdfText, setPdfText] = useState('')
+  const [pdfName, setPdfName] = useState('')
+  const [loadingPdf, setLoadingPdf] = useState(false)
   const listRef = useRef<HTMLUListElement>(null)
 
   const botName = 'AQUABOT'
@@ -22,8 +26,100 @@ const ChatbotWidget = () => {
     }
   }, [messages, open])
 
+  const extractPdfText = async (file: File) => {
+    const pdfjsLib = await import('pdfjs-dist')
+    const workerSrc = (await import('pdfjs-dist/build/pdf.worker.min.mjs?url')).default
+    pdfjsLib.GlobalWorkerOptions.workerSrc = workerSrc
+
+    const buffer = await file.arrayBuffer()
+    const loadingTask = pdfjsLib.getDocument({ data: new Uint8Array(buffer) })
+    const pdf = await loadingTask.promise
+
+    let collectedText = ''
+    const maxPages = Math.min(pdf.numPages, 8)
+
+    for (let pageNumber = 1; pageNumber <= maxPages; pageNumber++) {
+      const page = await pdf.getPage(pageNumber)
+      const textContent = await page.getTextContent()
+      const pageText = textContent.items
+        .map((item) => ('str' in item ? item.str : ''))
+        .join(' ')
+      collectedText += `${pageText}\n`
+    }
+
+    return collectedText.replace(/\s+/g, ' ').trim()
+  }
+
+  const onPdfSelected = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = event.target.files?.[0]
+    if (!selected) return
+
+    if (selected.type !== 'application/pdf') {
+      addMessage({ from: 'bot', text: 'Solo se permiten archivos PDF.', timestamp: Date.now() })
+      return
+    }
+
+    try {
+      setLoadingPdf(true)
+      const extracted = await extractPdfText(selected)
+      if (!extracted) {
+        addMessage({ from: 'bot', text: 'No pude extraer texto del PDF. Verifica que no sea escaneado como imagen.', timestamp: Date.now() })
+        return
+      }
+
+      setPdfText(extracted)
+      setPdfName(selected.name)
+      addMessage({
+        from: 'bot',
+        text: `PDF cargado: ${selected.name}. Ya puedo responder usando su contenido.`,
+        timestamp: Date.now()
+      })
+    } catch {
+      addMessage({ from: 'bot', text: 'Ocurrió un error al leer el PDF.', timestamp: Date.now() })
+    } finally {
+      setLoadingPdf(false)
+      event.target.value = ''
+    }
+  }
+
+  const replyFromPdf = (question: string) => {
+    if (!pdfText) return ''
+
+    const words = question
+      .toLowerCase()
+      .split(/\W+/)
+      .filter((word) => word.length >= 4)
+
+    const sentences = pdfText
+      .split(/(?<=[.!?])\s+/)
+      .map((sentence) => sentence.trim())
+      .filter(Boolean)
+
+    const relevant = sentences.filter((sentence) => {
+      const lower = sentence.toLowerCase()
+      return words.some((word) => lower.includes(word))
+    })
+
+    if (relevant.length > 0) {
+      const snippet = relevant.slice(0, 2).join(' ')
+      return iaMode
+        ? `Según el PDF (${pdfName || 'documento'}): ${snippet}`
+        : `PDF: ${snippet}`
+    }
+
+    const fallback = sentences.slice(0, 2).join(' ')
+    return iaMode
+      ? `No encontré coincidencias exactas en tu pregunta. Resumen inicial del PDF: ${fallback}`
+      : `No encontré coincidencias exactas. PDF: ${fallback}`
+  }
+
   const generateReply = (text: string) => {
     const t = text.toLowerCase()
+
+    if (pdfText) {
+      return replyFromPdf(text)
+    }
+
     if (t.includes('alimentacion') || t.includes('alimentación')) {
       return iaMode
         ? 'Recomendación: ajusta la ración al 2–6% del peso vivo según etapa. Alevines 8–10%, juveniles 4–6%, engorde 2–3%, pre-cosecha 1–2%.'
@@ -106,10 +202,20 @@ const ChatbotWidget = () => {
             <Divider />
 
             <Box sx={{ display: 'flex', gap: 1, p: 1 }}>
+              <Button
+                component="label"
+                variant="outlined"
+                size="small"
+                disabled={loadingPdf}
+                startIcon={<UploadFileIcon />}
+              >
+                {loadingPdf ? 'Cargando...' : 'PDF'}
+                <input type="file" accept="application/pdf" hidden onChange={onPdfSelected} />
+              </Button>
               <TextField
                 size="small"
                 fullWidth
-                placeholder="Escribe tu mensaje..."
+                placeholder={pdfText ? `Pregunta sobre ${pdfName || 'el PDF'}...` : 'Escribe tu mensaje...'}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => { if (e.key === 'Enter') send() }}
