@@ -113,8 +113,105 @@ const ChatbotWidget = () => {
       : `No encontré coincidencias exactas. PDF: ${fallback}`
   }
 
+  const parseFishCount = (text: string) => {
+    const normalized = text
+      .toLowerCase()
+      .replace(/,/g, '')
+      .replace(/\./g, '')
+
+    const milMatch = normalized.match(/(\d+)\s*mil/)
+    if (milMatch) return Number(milMatch[1]) * 1000
+
+    const countMatch = normalized.match(/(\d{3,6})\s*(alevines|peces|tilapias)?/)
+    if (countMatch) return Number(countMatch[1])
+
+    return null
+  }
+
+  const parseAverageWeightGrams = (text: string) => {
+    const normalized = text.toLowerCase().replace(',', '.')
+    const match = normalized.match(/(\d+(?:\.\d+)?)\s*(g|gr|gramos)/)
+    return match ? Number(match[1]) : null
+  }
+
+  const parseFeedingRatePercent = (text: string, isAlevin: boolean) => {
+    const normalized = text.toLowerCase().replace(',', '.')
+    const match = normalized.match(/(\d+(?:\.\d+)?)\s*%/)
+    if (match) return Number(match[1])
+    return isAlevin ? 8 : 3
+  }
+
+  const generateFeedReply = (text: string) => {
+    const fishCount = parseFishCount(text)
+    const weightGrams = parseAverageWeightGrams(text)
+    const isAlevin = text.toLowerCase().includes('alevin') || text.toLowerCase().includes('alevín')
+    const feedingRate = parseFeedingRatePercent(text, isAlevin)
+
+    if (!fishCount || !weightGrams) {
+      return iaMode
+        ? 'Para calcular alimento necesito al menos: número de peces y peso promedio en gramos. Ejemplo: "10 mil alevines de 5 g con ración 8%".'
+        : 'Faltan datos: cantidad de peces y peso promedio (g).'
+    }
+
+    const gramsPerDay = fishCount * weightGrams * (feedingRate / 100)
+    const kilosPerDay = gramsPerDay / 1000
+
+    return iaMode
+      ? `Estimación diaria: ${kilosPerDay.toFixed(2)} kg de alimento. Cálculo: ${fishCount} peces × ${weightGrams} g × ${feedingRate}% = ${gramsPerDay.toFixed(0)} g/día. Referencia orientativa; ajusta por consumo real y calidad de agua.`
+      : `${kilosPerDay.toFixed(2)} kg/día (estimado).`
+  }
+
+  const diseaseReply = (text: string) => {
+    const t = text.toLowerCase()
+
+    if (t.includes('manchas') || t.includes('puntos blancos') || t.includes('ich')) {
+      return iaMode
+        ? 'Posible ictio (punto blanco). Señales: puntos blancos, roce contra superficies y respiración agitada. Acciones iniciales: mejorar oxigenación, revisar temperatura y aislar lotes afectados; confirma diagnóstico con técnico.'
+        : 'Posible punto blanco; mejora agua y valida con técnico.'
+    }
+
+    if (t.includes('ulcer') || t.includes('lesion') || t.includes('herida') || t.includes('hemorrag')) {
+      return iaMode
+        ? 'Podría ser infección bacteriana (p. ej., Aeromonas/Columnaris). Revisa amonio/nitritos, reduce estrés por manejo y separa peces enfermos. Se recomienda evaluación sanitaria para tratamiento específico.'
+        : 'Posible bacteriana; corrige calidad de agua y separa afectados.'
+    }
+
+    if (t.includes('ojos salidos') || t.includes('exoftalmia') || t.includes('nado erratico') || t.includes('strept')) {
+      return iaMode
+        ? 'Compatible con estreptococosis en tilapia: nado errático, exoftalmia y mortalidad súbita. Prioriza bioseguridad, retiro de mortalidad y confirmación de laboratorio para decisión terapéutica.'
+        : 'Posible estreptococosis; aplica bioseguridad y confirma en laboratorio.'
+    }
+
+    return iaMode
+      ? 'En tilapia, evalúa síntomas clave (manchas, úlceras, nado anormal, branquias pálidas), calidad de agua y mortalidad diaria. Si me das síntomas concretos, te doy una hipótesis y acciones iniciales.'
+      : 'Indica síntomas para sugerir enfermedad probable.'
+  }
+
   const generateReply = (text: string) => {
     const t = text.toLowerCase()
+
+    const asksFeedCalculation =
+      t.includes('alimento') ||
+      t.includes('racion') ||
+      t.includes('ración') ||
+      t.includes('cuanto debo usar') ||
+      t.includes('cuánto debo usar')
+
+    if (asksFeedCalculation) {
+      return generateFeedReply(text)
+    }
+
+    const asksDisease =
+      t.includes('enfermedad') ||
+      t.includes('enfermedades') ||
+      t.includes('sintoma') ||
+      t.includes('síntoma') ||
+      t.includes('mortalidad') ||
+      t.includes('tilapia enferma')
+
+    if (asksDisease) {
+      return diseaseReply(text)
+    }
 
     if (pdfText) {
       return replyFromPdf(text)
