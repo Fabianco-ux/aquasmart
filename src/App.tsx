@@ -30,7 +30,7 @@ function App() {
         textAlign: 'center',
         position: 'relative'
       }}>
-        <img src={logoSrc} alt="AquaSmart Logo" style={{ position: 'absolute', top: 8, left: 12, height: 110 }} />
+        <img src={logoSrc} alt="AquaSmart Logo" style={{ position: 'absolute', top: 6, left: 12, width: 160, height: 160, zIndex: 2 }} />
         <h1>AquaSmart Manager</h1>
         <p>Gestión inteligente de acuicultura</p>
         <nav>
